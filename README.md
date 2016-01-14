@@ -18,6 +18,10 @@ $ npm install sheet-router
 - Minimal dependencies and tiny code size
 
 ## Usage
+sheet-router tries to make routing understandable and pleasant to work with. It
+does so by using a lisp-like structure which is internally compiled to an
+efficient data structure. Here each route takes either an array of children or
+a callback, which are then translated to paths that take callbacks
 ```js
 const sheetRouter = require('sheet-router')
 const h = require('virtual-dom/h')
@@ -26,13 +30,58 @@ const router = sheetRouter('/404', function (route) {
   return [
     route('/', (params, h, state) => h('div', 'index path')),
     route('/foo', [
-      route('/baz', (params, h, state) => h('div', 'foo path')),
-      route('/bar/text', (params, h, state) => h('div', state.text))
+      route('/', (params, h, state) => h('div', 'foo path')),
+      route('/:name/text', (params, h, state) => h('div', state.text))
     ])
   ]
 })
 
-router('/', h, { text: 'hello world' })
+router('/foo/hugh/text', h, { text: 'hello world' })
+```
+
+sheet-router can also be used to compose multiple views. Composing views is
+useful because often views share a lot of the same layout.
+
+Say we would want to have a base view with a sidebar and header, and different
+content based on the url, we could declare a view called `base.js` using
+[virtual-dom][13].
+```js
+module.exports = function (content) {
+  return function (params, h, state) {
+    return h('main', [
+      h('header'),
+      h('aside'),
+      content(params, h, state)
+    ])
+  }
+}
+```
+
+Say we would want to render a `/foo` and `/bar` views that extend our base
+view, we could pass the arguments into `./base` which then renders it out as
+content.
+```js
+const sheetRouter = require('sheet-router')
+const h = require('virtual-dom/h')
+const base = require('./base')
+
+const router = sheetRouter(function (route) {
+  return [
+    route('/foo', (params, h, state) => base(h('section', 'this is bar path')),
+    route('/bar', (params, h, state) => base(h('section', 'this is foo path'))
+  ]
+})
+
+router('/foo')
+```
+
+Calling the router with `/foo` will then return the following html:
+```html
+<main>
+  <menu></menu>
+  <aside></aside>
+  <section>this is foo path</section>
+</main>
 ```
 
 ## API
@@ -43,6 +92,10 @@ first argument.
 ### router(route, [,...])
 Match a route on the router. Takes a path and an arbitrary list of arguments
 that are then passed to the matched routes.
+
+## See Also
+- [wayfarer][12]
+- [virtual-dom][13]
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
@@ -60,3 +113,4 @@ that are then passed to the matched routes.
 [10]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
 [11]: https://github.com/feross/standard
 [12]: https://github.com/yoshuawuyts/wayfarer
+[13]: https://github.com/matt-esch/virtual-dom
