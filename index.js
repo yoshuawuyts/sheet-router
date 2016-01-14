@@ -46,6 +46,6 @@ function sheetRouter (dft, createTree) {
   // match a route on the router
   return function match (route) {
     assert.equal(typeof route, 'string', 'route must be a string')
-    router.apply(null, sliced(arguments))
+    return router.apply(null, sliced(arguments))
   }
 }

@@ -37,6 +37,19 @@ test('should match a default path', function (t) {
   router('/foo')
 })
 
+test('should return a value', function (t) {
+  t.plan(1)
+  const router = sheetRouter('/404', function (route) {
+    return [
+      route('/404', function (params) {
+        return 'foo'
+      })
+    ]
+  })
+
+  t.equal(router('/foo'), 'foo', 'returned value')
+})
+
 test('should deliver arbitrary objects', function (t) {
   t.plan(2)
   const router = sheetRouter(function (route) {
