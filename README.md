@@ -84,6 +84,51 @@ Calling the router with `/foo` will then return the following html:
 </main>
 ```
 
+### virtual-dom example
+```js
+const render = require('virtual-dom/create-element')
+const sheetRouter = require('sheet-router')
+const h = require('virtual-dom/h')
+
+const router = sheetRouter(function (route) {
+  return [
+    route('/foo/bar', function (params, h, state) {
+      h('div', null, 'hello world')
+    }
+  ]
+})
+
+const node = render(router('/foo', h, { name: 'Jane' }))
+document.body.appendChild(node)
+```
+```html
+<body>
+  <div>hello world</div>
+</body>
+```
+
+### react example
+```js
+const sheetRouter = require('sheet-router')
+const render = require('react-dom')
+const react = require('react')
+
+const router = sheetRouter(function (route) {
+  return [
+    route('/foo/bar', function (params, h, state) {
+      h('div', null, 'hello world')
+    }
+  ]
+})
+
+render(router('/foo', react.createElement, { name: 'Jane' }), document.body)
+```
+```html
+<body>
+  <div>hello world</div>
+</body>
+```
+
 ## API
 ### router = sheetRouter(dft?, createTree(route))
 Create a new router from a nested array. Takes an optional default path as the
@@ -96,6 +141,7 @@ that are then passed to the matched routes.
 ## See Also
 - [wayfarer][12]
 - [virtual-dom][13]
+- [hyperx][14]
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
@@ -113,4 +159,5 @@ that are then passed to the matched routes.
 [10]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
 [11]: https://github.com/feross/standard
 [12]: https://github.com/yoshuawuyts/wayfarer
-[13]: https://github.com/matt-esch/virtual-dom
+[13]: https://github.com/Matt-Esch/virtual-dom
+[14]: https://github.com/substack/hyperx
