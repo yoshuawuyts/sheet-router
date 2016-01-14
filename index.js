@@ -6,10 +6,13 @@ module.exports = sheetRouter
 
 // Fast, modular client router
 // fn(str, any[..]) -> fn(str, any[..])
-function sheetRouter (createTree, dft) {
-  dft = dft || ''
-  assert.equal(typeof createTree, 'function', 'createTree must be a function')
+function sheetRouter (dft, createTree) {
+  if (!createTree) {
+    createTree = dft
+    dft = ''
+  }
   assert.equal(typeof dft, 'string', 'dft must be a string')
+  assert.equal(typeof createTree, 'function', 'createTree must be a function')
 
   const router = wayfarer(dft)
   var tree = createTree(function (route, child) {
