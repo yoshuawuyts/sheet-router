@@ -1,6 +1,6 @@
 {
   "name": "sheet-router",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fast, modular client router",
   "main": "index.js",
   "scripts": {
