@@ -36,7 +36,10 @@ function sheetRouter (dft, createTree) {
       walk(tree[1], route.concat(tree[0]))
     } else {
       // register path in router
-      router.on(route.concat(tree[0]).join('/'), tree[1])
+      const nwRoute = tree[0]
+        ? route.concat(tree[0]).join('/')
+        : route.length ? route.join('/') : tree[0]
+      router.on(nwRoute, tree[1])
     }
   })(tree, [])
 

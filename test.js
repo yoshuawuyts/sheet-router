@@ -67,6 +67,21 @@ test('should route nested paths 2 levels deep', function (t) {
   router('/foo/bar')
 })
 
+test('should route vanilla paths 2 levels deep', function (t) {
+  t.plan(1)
+  const router = sheetRouter(function (route) {
+    return [
+      route('/foo', [
+        route('/', function () {
+          t.pass('called')
+        })
+      ])
+    ]
+  })
+
+  router('/foo')
+})
+
 test('should route nested paths 3 levels deep', function (t) {
   t.plan(1)
   const router = sheetRouter(function (route) {
