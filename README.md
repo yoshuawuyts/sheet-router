@@ -16,6 +16,8 @@ $ npm install sheet-router
 - Tuned for performance by generating a [radix-trie][12]
 - Not bound to any framework
 - Minimal dependencies and tiny code size
+- HTML5 history support
+- Catch and handle `<a href="">` links
 
 ## Usage
 sheet-router tries to make routing understandable and pleasant to work with. It
@@ -84,6 +86,32 @@ Calling the router with `/foo` will then return the following html:
 </main>
 ```
 
+### history
+Interacting with the browser history is a common action, sheet-router
+supports this out of the box. When the `forwards` or `backwards` buttons in the
+browser are clicked, or `history.back` / `history.go` are called sheet-router
+will update accordingly.
+```js
+const history = require('sheet-router/history')
+history(function (href) {
+  router(href)
+  console.log('history changed: ' + href)
+})
+```
+
+### href
+In HTML links are represented with `<a href="">` style tags. Sheet-router can
+be smart about these and handle them globally. This way there's no need to
+attach specific listeners to each link and static HTML templates can be
+upgraded seemlessly to include single-page routing.
+```js
+const history = require('sheet-router/history')
+history(function (href) {
+  router(href)
+  console.log('history changed: ' + href)
+})
+```
+
 ### virtual-dom example
 ```js
 const render = require('virtual-dom/create-element')
@@ -138,6 +166,11 @@ first argument.
 Match a route on the router. Takes a path and an arbitrary list of arguments
 that are then passed to the matched routes. Cleans urls to only match the
 [pathname][15].
+
+### history(router, cb(href)?)
+Register the router to handle html5 pushsState history and listen to `<a
+href="">` clicks. Calls an optional callback with the new href which can be
+used to update application state.
 
 ## See Also
 - [wayfarer][12]

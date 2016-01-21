@@ -1,4 +1,3 @@
-// const h = require('virtual-dom/h')
 const noop = require('noop2')
 const test = require('tape')
 

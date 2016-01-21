@@ -4,19 +4,24 @@
   "description": "Fast, modular client router",
   "main": "index.js",
   "scripts": {
-    "deps": "dependency-check . && dependency-check . --extra --no-dev",
-    "test": "standard && npm run deps && NODE_ENV=test node test",
-    "test:cov": "standard && npm run deps && NODE_ENV=test istanbul cover test.js"
+    "test": "standard && NODE_ENV=test node test",
+    "test:cov": "standard && NODE_ENV=test istanbul cover test.js"
   },
   "repository": "yoshuawuyts/sheet-router",
   "keywords": [
     "client",
     "router",
     "modular",
-    "wayfarer"
+    "wayfarer",
+    "history",
+    "pushstate",
+    "single-page",
+    "spa",
+    "progressive"
   ],
   "license": "MIT",
   "dependencies": {
+    "global": "^4.3.0",
     "sliced": "^1.0.1",
     "wayfarer": "^6.1.0"
   },
@@ -30,6 +35,7 @@
   },
   "files": [
     "index.js",
+    "history.js",
     "bin/*"
   ]
 }
