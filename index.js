@@ -1,6 +1,7 @@
 const wayfarer = require('wayfarer')
 const assert = require('assert')
 const sliced = require('sliced')
+const url = require('url')
 
 module.exports = sheetRouter
 
@@ -46,6 +47,8 @@ function sheetRouter (dft, createTree) {
   // match a route on the router
   return function match (route) {
     assert.equal(typeof route, 'string', 'route must be a string')
-    return router.apply(null, sliced(arguments))
+    const args = sliced(arguments)
+    args[0] = url.parse(args[0]).pathname
+    return router.apply(null, args)
   }
 }

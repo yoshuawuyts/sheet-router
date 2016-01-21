@@ -136,7 +136,8 @@ first argument.
 
 ### router(route, [,...])
 Match a route on the router. Takes a path and an arbitrary list of arguments
-that are then passed to the matched routes.
+that are then passed to the matched routes. Cleans urls to only match the
+[pathname][15].
 
 ## See Also
 - [wayfarer][12]
@@ -161,3 +162,4 @@ that are then passed to the matched routes.
 [12]: https://github.com/yoshuawuyts/wayfarer
 [13]: https://github.com/Matt-Esch/virtual-dom
 [14]: https://github.com/substack/hyperx
+[15]: https://nodejs.org/api/url.html#url_url_parsing

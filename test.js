@@ -50,6 +50,19 @@ test('should return a value', function (t) {
   t.equal(router('/foo'), 'foo', 'returned value')
 })
 
+test('should clean urls before matching', function (t) {
+  t.plan(1)
+  const router = sheetRouter(function (route) {
+    return [
+      route('/foo', function (params) {
+        t.pass('called')
+      })
+    ]
+  })
+
+  router('https://foobar.com/foo#hello-world?bar=baz')
+})
+
 test('should deliver arbitrary objects', function (t) {
   t.plan(2)
   const router = sheetRouter(function (route) {
