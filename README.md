@@ -167,10 +167,9 @@ Match a route on the router. Takes a path and an arbitrary list of arguments
 that are then passed to the matched routes. Cleans urls to only match the
 [pathname][15].
 
-### history(router, cb(href)?)
-Register the router to handle html5 pushsState history and listen to `<a
-href="">` clicks. Calls an optional callback with the new href which can be
-used to update application state.
+### history(cb(href))
+Call a callback to handle html5 pushsState history and handle `<a href="">`
+clicks.
 
 ## See Also
 - [wayfarer][12]
