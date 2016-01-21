@@ -118,9 +118,9 @@ const render = require('virtual-dom/create-element')
 const sheetRouter = require('sheet-router')
 const h = require('virtual-dom/h')
 
-const router = sheetRouter(function (route) {
+const router = sheetRouter(function (r, t) {
   return [
-    route('/foo/bar', function (params, h, state) {
+    r('/foo/bar', function (params, h, state) {
       h('div', null, 'hello world')
     }
   ]
@@ -141,9 +141,9 @@ const sheetRouter = require('sheet-router')
 const render = require('react-dom')
 const react = require('react')
 
-const router = sheetRouter(function (route) {
+const router = sheetRouter(function (r, t) {
   return [
-    route('/foo/bar', function (params, h, state) {
+    r('/foo/bar', function (params, h, state) {
       h('div', null, 'hello world')
     }
   ]
@@ -170,6 +170,22 @@ that are then passed to the matched routes. Cleans urls to only match the
 ### history(cb(href))
 Call a callback to handle html5 pushsState history and handle `<a href="">`
 clicks.
+
+### bridge(render, stateKey?, router(state))
+Bridge a render function that passes a state object to sheet-router.
+sheet-router is then wrapped in a thunk, and will only diff paths if the route
+on the state object has changed. This requires routes to return a thunk which
+takes additional arguments, which can be done by calling the second argument of
+`t` (for thunk) instead of `r` to create routes.
+```js
+const bridge = require('sheet-router/bridge')
+const sheetRouter = require('sheet-router')
+const createApp = require('virtual-app')
+
+const app = createApp(document.body, vdom)
+const render = app.start(modifyState, initialState)
+bridge(render, (state) => router(state.location, app.h))
+```
 
 ## See Also
 - [wayfarer][12]

@@ -16,12 +16,25 @@ function sheetRouter (dft, createTree) {
   assert.equal(typeof createTree, 'function', 'createTree must be a function')
 
   const router = wayfarer(dft)
-  var tree = createTree(function (route, child) {
+  var tree = createTree(r, t)
+
+  // register regular route
+  function r (route, child) {
     assert.equal(typeof route, 'string', 'route must be a string')
     assert.ok(child, 'child exists')
     route = route.replace(/^\//, '')
     return [ route, child ]
-  })
+  }
+
+  // register thunked route
+  function t (route, child) {
+    return r(route, function () {
+      const args = sliced(arguments)
+      return function router_thunk () {
+        return child.apply(null, args.concat(sliced(arguments)))
+      }
+    })
+  }
 
   tree = Array.isArray(tree) ? tree : [ tree ]
 
