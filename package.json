@@ -37,6 +37,7 @@
   "files": [
     "index.js",
     "history.js",
+    "bridge.js",
     "bin/*"
   ]
 }
