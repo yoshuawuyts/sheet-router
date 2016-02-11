@@ -17,7 +17,7 @@ function bridge (render, key, cb) {
   var currLocation = null
   var currElement = null
 
-  render(function (state) {
+  return render(function (state) {
     if (currElement && state[key] === currLocation) {
       return currElement(state)
     } else {
