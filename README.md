@@ -105,10 +105,10 @@ be smart about these and handle them globally. This way there's no need to
 attach specific listeners to each link and static HTML templates can be
 upgraded seemlessly to include single-page routing.
 ```js
-const history = require('sheet-router/history')
-history(function (href) {
+const href = require('sheet-router/href')
+href(function (href) {
   router(href)
-  console.log('history changed: ' + href)
+  console.log('link was clicked: ' + href)
 })
 ```
 
