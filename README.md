@@ -4,7 +4,7 @@
 
 sheet-router is a fast, modular client-side router. It enables view composition
 and is tuned for performance by statically declaring routes in a
-[radix-trie][12].
+[radix-trie][12]. Weighs `1.5KB` minified and gzipped.
 
 ## Installation
 ```sh
