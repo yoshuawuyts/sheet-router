@@ -120,13 +120,13 @@ const h = require('virtual-dom/h')
 
 const router = sheetRouter(function (r, t) {
   return [
-    t('/foo/bar', function (params, h, state) {
+    r('/foo/bar', function (params, h, state) {
       return h('div', null, 'hello world')
     })
   ]
 })
 
-const node = render(router('/foo/bar')(h, { name: 'Jane' }))
+const node = render(router('/foo/bar', h, { name: 'Jane' }))
 document.body.appendChild(node)
 ```
 ```html
