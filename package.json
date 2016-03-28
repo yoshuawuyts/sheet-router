@@ -38,6 +38,7 @@
     "index.js",
     "history.js",
     "bridge.js",
+    "href.js",
     "bin/*"
   ]
 }
