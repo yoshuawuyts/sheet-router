@@ -33,11 +33,5 @@
     "standard": "^5.4.1",
     "tape": "^4.4.0",
     "virtual-dom": "^2.1.1"
-  },
-  "files": [
-    "index.js",
-    "history.js",
-    "bridge.js",
-    "bin/*"
-  ]
+  }
 }
