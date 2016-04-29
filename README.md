@@ -49,13 +49,11 @@ content based on the url, we could declare a view called `base.js` using
 [virtual-dom][13].
 ```js
 module.exports = function (content) {
-  return function (params, h, state) {
-    return h('main', [
-      h('header'),
-      h('aside'),
-      content(params, h, state)
-    ])
-  }
+  return h('main', [
+    h('header'),
+    h('aside'),
+    content(params, h, state)
+  ])
 }
 ```
 
