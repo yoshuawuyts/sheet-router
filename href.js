@@ -11,11 +11,18 @@ function href (cb) {
   assert.equal(typeof cb, 'function', 'cb must be a function')
 
   window.onclick = function (e) {
-    if (e.target.localName !== 'a') return
-    if (e.target.href === undefined) return
-    if (window.location.host !== e.target.host) return
-    const href = e.target.href.replace(/#$/, '')
+    const node = (function traverse (node) {
+      if (!node) return
+      if (node.localName !== 'a') return traverse(node.parentNode)
+      if (node.href === undefined) return traverse(node.parentNode)
+      if (window.location.host !== node.host) return traverse(node.parentNode)
+      return node
+    })(e.target)
+
+    if (!node) return
+
     e.preventDefault()
+    const href = node.href.replace(/#$/, '')
     cb(href)
     window.history.pushState({}, null, href)
   }
