@@ -159,6 +159,26 @@ test('should route partial cojoined paths 3 levels deep', function (t) {
   router('/foo/baz/ban/bar')
 })
 
+test('should route multiple partials', function (t) {
+  t.plan(3)
+  const router = sheetRouter(function (route) {
+    return [
+      route('/', function () {
+        t.pass('called')
+      }),
+      route('/:foo', [
+        route('/:bar', function (params) {
+          t.equal(params.foo, 'first', 'params foo match')
+          t.equal(params.bar, 'second', 'params bar match')
+        })
+      ])
+    ]
+  })
+
+  router('/')
+  router('/first/second')
+})
+
 test('should route multiple nested paths 2 levels deep', function (t) {
   t.plan(2)
   const router = sheetRouter(function (route) {
