@@ -26,64 +26,18 @@ efficient data structure. Here each route takes either an array of children or
 a callback, which are then translated to paths that take callbacks
 ```js
 const sheetRouter = require('sheet-router')
-const h = require('virtual-dom/h')
+const yo = require('yo-yo')
 
 const router = sheetRouter('/404', function (route) {
   return [
-    route('/', (params, h, state) => h('div', 'index path')),
-    route('/foo', [
-      route('/', (params, h, state) => h('div', 'foo path')),
-      route('/:name/text', (params, h, state) => h('div', state.text))
+    route('/', (params) => yo`<div>Welcome to router land!</div>`),
+    route('/:username', (params) => yo`<div>${params.username}</div>`, [
+      route('/orgs', (params) => yo`<div>${params.username}'s orgs!</div>'`)
     ])
   ]
 })
 
-router('/foo/hugh/text', h, { text: 'hello world' })
-```
-
-sheet-router can also be used to compose multiple views. Composing views is
-useful because often views share a lot of the same layout.
-
-Say we would want to have a base view with a sidebar and header, and different
-content based on the url, we could declare a view called `base.js` using
-[virtual-dom][13].
-```js
-module.exports = function (content) {
-  return function (params, h, state) {
-    return h('main', [
-      h('header'),
-      h('aside'),
-      content(params, h, state)
-    ])
-  }
-}
-```
-
-Say we would want to render a `/foo` and `/bar` views that extend our base
-view, we could pass the arguments into `./base` which then renders it out as
-content.
-```js
-const sheetRouter = require('sheet-router')
-const h = require('virtual-dom/h')
-const base = require('./base')
-
-const router = sheetRouter(function (route) {
-  return [
-    route('/foo', (params, h, state) => base(h('section', 'this is bar path')),
-    route('/bar', (params, h, state) => base(h('section', 'this is foo path'))
-  ]
-})
-
-router('/foo')
-```
-
-Calling the router with `/foo` will then return the following html:
-```html
-<main>
-  <menu></menu>
-  <aside></aside>
-  <section>this is foo path</section>
-</main>
+router('/hughsk/orgs')
 ```
 
 ### history
@@ -173,25 +127,8 @@ that are then passed to the matched routes. Cleans urls to only match the
 Call a callback to handle html5 pushsState history and handle `<a href="">`
 clicks.
 
-### bridge(render, stateKey?, router(state))
-Bridge a render function that passes a state object to sheet-router.
-sheet-router is then wrapped in a thunk, and will only diff paths if the route
-on the state object has changed. This requires routes to return a thunk which
-takes additional arguments, which can be done by calling the second argument of
-`t` (for thunk) instead of `r` to create routes.
-```js
-const bridge = require('sheet-router/bridge')
-const sheetRouter = require('sheet-router')
-const createApp = require('virtual-app')
-
-const app = createApp(document.body, vdom)
-const render = app.start(modifyState, initialState)
-bridge(render, (state) => router(state.location, app.h))
-```
-
 ## See Also
 - [wayfarer][12]
-- [virtual-dom][13]
 - [hyperx][14]
 
 ## License

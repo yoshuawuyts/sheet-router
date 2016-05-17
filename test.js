@@ -197,3 +197,15 @@ test('should route multiple nested paths 2 levels deep', function (t) {
   router('/foo/bar')
   router('/foo/baz')
 })
+
+test('should allow for default routes using three args', function (t) {
+  t.plan(2)
+  const router = sheetRouter((route) => [
+    route('/foo', () => t.pass('foo called'), [
+      route('/bar', () => t.pass('bar called'))
+    ])
+  ])
+
+  router('/foo')
+  router('/foo/bar')
+})
