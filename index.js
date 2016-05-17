@@ -5,17 +5,19 @@ const assert = require('assert')
 module.exports = sheetRouter
 
 // Fast, modular client router
-// fn(str, any[..]) -> fn(str, any[..])
-function sheetRouter (dft, createTree) {
+// fn(str, any[..], fn?) -> fn(str, any[..])
+function sheetRouter (dft, createTree, createRoute) {
+  createRoute = createRoute ? createRoute(r) : r
   if (!createTree) {
     createTree = dft
     dft = ''
   }
+
   assert.equal(typeof dft, 'string', 'dft must be a string')
   assert.equal(typeof createTree, 'function', 'createTree must be a function')
 
   const router = wayfarer(dft)
-  const tree = createTree(r, t)
+  const tree = createTree(createRoute)
 
   // register tree in router
   ;(function walk (tree, route) {
@@ -62,14 +64,4 @@ function r (route, inline, child) {
   assert.ok(child, 'child exists')
   route = route.replace(/^\//, '')
   return [ route, inline, child ]
-}
-
-// register thunked route
-function t (route, inline, child) {
-  return r(route, function () {
-    const args = [].slice.call(null, arguments)
-    return function router_thunk () {
-      return child.apply(null, args.concat([].slice.call(arguments)))
-    }
-  })
 }
