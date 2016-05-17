@@ -124,8 +124,10 @@ that are then passed to the matched routes. Cleans urls to only match the
 [pathname][15].
 
 ### history(cb(href))
-Call a callback to handle html5 pushsState history and handle `<a href="">`
-clicks.
+Call a callback to handle html5 pushsState history.
+
+### href(cb(href))
+Call a callback to handle `<a href="#">` clicks.
 
 ## See Also
 - [wayfarer][12]
