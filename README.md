@@ -65,8 +65,6 @@ href(function (href) {
   console.log('link was clicked: ' + href)
 })
 ```
-It is good practice to represent JS actions as `<a href="#">`, as a good
-number of components in the wild expect `<a>` tags to have an `href` value.
 
 ### virtual-dom example
 ```js
