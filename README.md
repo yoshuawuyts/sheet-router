@@ -60,7 +60,7 @@ const hash = require('sheet-router/hash')
 const match = require('hash-match')
 hash(function (href) {
   router(match(href))
-  console.log('hash location changed: ', + href)
+  console.log('hash location changed: ' + href)
 })
 ```
 
