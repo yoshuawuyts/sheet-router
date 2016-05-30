@@ -53,6 +53,17 @@ history(function (href) {
 })
 ```
 
+### hash
+Interacting with hash changes is often a common fallback scenario for those who don't have support for browser history. Whenever a `hashchange` event is triggered, sheet-router will trigger an update as seen below. However in order to match hash prefixed routes, the `hash-match` module can be used to normalize routes (ex: `#/foo` becomes `/foo`).
+```js
+const hash = require('sheet-router/hash')
+const match = require('hash-match')
+hash(function (href) {
+  router(match(href))
+  console.log('hash location changed: ', + href)
+})
+```
+
 ### href
 In HTML links are represented with `<a href="">` style tags. Sheet-router can
 be smart about these and handle them globally. This way there's no need to
