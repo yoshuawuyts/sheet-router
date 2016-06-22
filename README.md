@@ -32,7 +32,7 @@ const router = sheetRouter('/404', function (route) {
   return [
     route('/', (params) => yo`<div>Welcome to router land!</div>`),
     route('/:username', (params) => yo`<div>${params.username}</div>`, [
-      route('/orgs', (params) => yo`<div>${params.username}'s orgs!</div>'`)
+      route('/orgs', (params) => yo`<div>${params.username}'s orgs!</div>`)
     ])
   ]
 })
