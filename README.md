@@ -28,12 +28,14 @@ a callback, which are then translated to paths that take callbacks
 const sheetRouter = require('sheet-router')
 const yo = require('yo-yo')
 
+// default to `/404` if no path matches
 const router = sheetRouter('/404', function (route) {
   return [
     route('/', (params) => yo`<div>Welcome to router land!</div>`),
     route('/:username', (params) => yo`<div>${params.username}</div>`, [
       route('/orgs', (params) => yo`<div>${params.username}'s orgs!</div>`)
-    ])
+    ]),
+    route('/404', (params) => yo`<div>Oh no, path not found!</div>`),
   ]
 })
 
