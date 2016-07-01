@@ -125,9 +125,13 @@ render(router('/foo', react.createElement, { name: 'Jane' }), document.body)
 ```
 
 ## API
-### router = sheetRouter(dft?, createTree(route))
+### router = sheetRouter(dft?, createTree(route), createRoute?)
 Create a new router from a nested array. Takes an optional default path as the
 first argument.
+
+If `createRoute(route)` is passed as the third argument, the `route()` function
+passed to `createTree()` can be manipulated. This is useful for things like
+changing argument order and the like.
 
 ### router(route, [,...])
 Match a route on the router. Takes a path and an arbitrary list of arguments
@@ -143,6 +147,7 @@ Call a callback to handle `<a href="#">` clicks.
 ## See Also
 - [wayfarer][12]
 - [hyperx][14]
+- [choo](https://github.com/yoshuawuyts/choo)
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
