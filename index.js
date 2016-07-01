@@ -7,14 +7,16 @@ module.exports = sheetRouter
 // Fast, modular client router
 // fn(str, any[..], fn?) -> fn(str, any[..])
 function sheetRouter (dft, createTree, createRoute) {
-  createRoute = createRoute ? createRoute(r) : r
+  createRoute = (createRoute ? createRoute(_createRoute) : _createRoute)
+
   if (!createTree) {
     createTree = dft
     dft = ''
   }
 
-  assert.equal(typeof dft, 'string', 'dft must be a string')
-  assert.equal(typeof createTree, 'function', 'createTree must be a function')
+  assert.equal(typeof dft, 'string', 'sheet-router: dft must be a string')
+  assert.equal(typeof createTree, 'function', 'sheet-router: createTree must be a function')
+  assert.equal(typeof createRoute, 'function', 'sheet-router: createRoute must be a function')
 
   const router = wayfarer(dft)
   const tree = createTree(createRoute)
@@ -55,7 +57,7 @@ function sheetRouter (dft, createTree, createRoute) {
 }
 
 // register regular route
-function r (route, inline, child) {
+function _createRoute (route, inline, child) {
   if (!child) {
     child = inline
     inline = null

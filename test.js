@@ -179,3 +179,37 @@ test('should allow for default routes using three args', function (t) {
   router('/foo')
   router('/foo/bar')
 })
+
+test('should allow for a custom createRoute function', function (t) {
+  t.plan(2)
+  const router = sheetRouter('', (route) => {
+    return [
+      route('/foo/:bin', (state, send) => {
+        const expected = {
+          foo: 'bar',
+          params: { bin: 'baz' }
+        }
+        t.deepEqual(state, expected, 'state was merged')
+        t.equal(send, 'oi')
+      })
+    ]
+  }, createRoute)
+
+  router('/foo/baz', { foo: 'bar' })
+
+  function createRoute (routeFn) {
+    return function (route, inline, child) {
+      if (!child) inline = wrap(inline)
+      else child = wrap(child)
+      return routeFn(route, inline, child)
+    }
+
+    function wrap (child) {
+      const send = 'oi'
+      return function wrap (params, state) {
+        state.params = params
+        return child(state, send)
+      }
+    }
+  }
+})
