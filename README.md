@@ -79,6 +79,23 @@ href(function (href) {
 })
 ```
 
+Often it is useful to filter the urls that the `href()` callback will be called with. You can do this by providing a second parameter containing a filtering function.
+
+For example, if we wanted to filter out all link clicks that have been tagged with a data attribute `data-external-link` we could do it like this:
+
+```js
+const href = require('sheet-router/href')
+href(function (url) {
+  router(url)
+  console.log('link was clicked: ' + url)
+}, allowInternalLinks)
+
+function allowInternalLinks(node) {
+  const isExternalLink = node.hasAttribute('data-external-link')
+  return !isExternalLink
+}
+```
+
 ### virtual-dom example
 ```js
 const render = require('virtual-dom/create-element')
@@ -141,7 +158,7 @@ that are then passed to the matched routes. Cleans urls to only match the
 ### history(cb(href))
 Call a callback to handle html5 pushsState history.
 
-### href(cb(href))
+### href(cb(href), filterFn(domNode)?)
 Call a callback to handle `<a href="#">` clicks.
 
 ## See Also
