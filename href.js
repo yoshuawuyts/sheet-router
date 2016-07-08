@@ -6,8 +6,8 @@ module.exports = href
 // handle a click if is anchor tag with an href
 // and url lives on the same domain. Replaces
 // trailing '#' so empty links work as expected.
-// fn(str) -> null
-function href (cb) {
+// fn(str) -> fn(node)? -> null
+function href (cb, filterFn) {
   assert.equal(typeof cb, 'function', 'cb must be a function')
 
   window.onclick = function (e) {
@@ -20,6 +20,8 @@ function href (cb) {
     })(e.target)
 
     if (!node) return
+
+    if (filterFn && !filterFn(node)) return
 
     e.preventDefault()
     const href = node.href.replace(/#$/, '')
