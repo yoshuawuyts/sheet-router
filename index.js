@@ -5,45 +5,52 @@ const assert = require('assert')
 module.exports = sheetRouter
 
 // Fast, modular client router
-// fn(str, any[..], fn?) -> fn(str, any[..])
-function sheetRouter (dft, createTree, createRoute) {
-  createRoute = (createRoute ? createRoute(_createRoute) : _createRoute)
-
-  if (!createTree) {
-    createTree = dft
+// fn(str, any[..]) -> fn(str, any[..])
+function sheetRouter (dft, tree) {
+  if (!tree) {
+    tree = dft
     dft = ''
   }
 
   assert.equal(typeof dft, 'string', 'sheet-router: dft must be a string')
-  assert.equal(typeof createTree, 'function', 'sheet-router: createTree must be a function')
-  assert.equal(typeof createRoute, 'function', 'sheet-router: createRoute must be a function')
+  assert.ok(Array.isArray(tree), 'sheet-router: tree must be an array')
 
   const router = wayfarer(dft)
-  const tree = createTree(createRoute)
 
   // register tree in router
-  ;(function walk (tree, route) {
-    if (Array.isArray(tree[0])) {
-      // walk over all routes at the root of the tree
-      tree.forEach(function (node) {
-        walk(node, route)
-      })
-    } else if (tree[1]) {
-      // handle inline functions as args
-      const innerRoute = tree[0]
-        ? route.concat(tree[0]).join('/')
-        : route.length ? route.join('/') : tree[0]
-      router.on(innerRoute, tree[1])
-      walk(tree[2], route.concat(tree[0]))
-    } else if (Array.isArray(tree[2])) {
-      // traverse and append route
-      walk(tree[2], route.concat(tree[0]))
+  // tree[0] is a string, thus a route
+  // tree[0] is an array, thus not a route
+  // tree[1] is a function
+    // tree[2] is an array
+    // tree[2] is not an array
+  // tree[1] is an array
+  ;(function walk (tree, fullRoute) {
+    if (typeof tree[0] === 'string') {
+      var route = tree[0].replace(/^\//, '')
     } else {
-      // register path in router
-      const nwRoute = tree[0]
-        ? route.concat(tree[0]).join('/')
-        : route.length ? route.join('/') : tree[0]
-      router.on(nwRoute, tree[2])
+      var rootArr = tree[0]
+    }
+
+    const cb = (typeof tree[1] === 'function') ? tree[1] : null
+    const children = (Array.isArray(tree[1]))
+      ? tree[1]
+      : Array.isArray(tree[2]) ? tree[2] : null
+
+    if (rootArr) {
+      tree.forEach(function (node) {
+        walk(node, fullRoute)
+      })
+    }
+
+    if (cb) {
+      const innerRoute = route
+        ? fullRoute.concat(route).join('/')
+        : fullRoute.length ? fullRoute.join('/') : route
+      router.on(innerRoute, cb)
+    }
+
+    if (Array.isArray(children)) {
+      walk(children, fullRoute.concat(route))
     }
   })(tree, [])
 
@@ -54,16 +61,4 @@ function sheetRouter (dft, createTree, createRoute) {
     args[0] = pathname(args[0])
     return router.apply(null, args)
   }
-}
-
-// register regular route
-function _createRoute (route, inline, child) {
-  if (!child) {
-    child = inline
-    inline = null
-  }
-  assert.equal(typeof route, 'string', 'route must be a string')
-  assert.ok(child, 'child exists')
-  route = route.replace(/^\//, '')
-  return [ route, inline, child ]
 }

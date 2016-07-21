@@ -26,18 +26,16 @@ efficient data structure. Here each route takes either an array of children or
 a callback, which are then translated to paths that take callbacks
 ```js
 const sheetRouter = require('sheet-router')
-const yo = require('yo-yo')
+const html = require('bel')
 
 // default to `/404` if no path matches
-const router = sheetRouter('/404', function (route) {
-  return [
-    route('/', (params) => yo`<div>Welcome to router land!</div>`),
-    route('/:username', (params) => yo`<div>${params.username}</div>`, [
-      route('/orgs', (params) => yo`<div>${params.username}'s orgs!</div>`)
-    ]),
-    route('/404', (params) => yo`<div>Oh no, path not found!</div>`),
-  ]
-})
+const router = sheetRouter('/404', [
+  ['/', (params) => html`<div>Welcome to router land!</div>`],
+  ['/:username', (params) => html`<div>${params.username}</div>`, [
+    ['/orgs', (params) => html`<div>${params.username}'s orgs!</div>`]
+  ]],
+  ['/404', (params) => html`<div>Oh no, path not found!</div>`],
+])
 
 router('/hughsk/orgs')
 ```
@@ -84,14 +82,13 @@ href(function (href) {
 const render = require('virtual-dom/create-element')
 const sheetRouter = require('sheet-router')
 const h = require('virtual-dom/h')
+const hyperx = require('hyperx')
 
-const router = sheetRouter(function (r, t) {
-  return [
-    r('/foo/bar', function (params, h, state) {
-      return h('div', null, 'hello world')
-    })
-  ]
-})
+const html = hyperx(h)
+
+const router = sheetRouter([
+  ['/foo/bar', (params, h, state) => html`<div>hello world!</div>`]
+])
 
 const node = render(router('/foo/bar', h, { name: 'Jane' }))
 document.body.appendChild(node)
@@ -106,15 +103,14 @@ document.body.appendChild(node)
 ```js
 const sheetRouter = require('sheet-router')
 const render = require('react-dom')
+const hyperx = require('hyperx')
 const react = require('react')
 
-const router = sheetRouter(function (r, t) {
-  return [
-    r('/foo/bar', function (params, h, state) {
-      h('div', null, 'hello world')
-    }
-  ]
-})
+const html = hyperx(react.createElement)
+
+const router = sheetRouter([
+  ['/foo/bar', (params, h, state) => html`<div>hello world!</div>`]
+])
 
 render(router('/foo', react.createElement, { name: 'Jane' }), document.body)
 ```
@@ -125,13 +121,9 @@ render(router('/foo', react.createElement, { name: 'Jane' }), document.body)
 ```
 
 ## API
-### router = sheetRouter(dft?, createTree(route), createRoute?)
+### router = sheetRouter(dft?, [routes])
 Create a new router from a nested array. Takes an optional default path as the
 first argument.
-
-If `createRoute(route)` is passed as the third argument, the `route()` function
-passed to `createTree()` can be manipulated. This is useful for things like
-changing argument order and the like.
 
 ### router(route, [,...])
 Match a route on the router. Takes a path and an arbitrary list of arguments
