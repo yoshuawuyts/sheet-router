@@ -16,6 +16,8 @@ function sheetRouter (dft, tree) {
   assert.ok(Array.isArray(tree), 'sheet-router: tree must be an array')
 
   const router = wayfarer(dft)
+  var lastCallback = null
+  var lastRoute = null
 
   // register tree in router
   // tree[0] is a string, thus a route
@@ -46,7 +48,7 @@ function sheetRouter (dft, tree) {
       const innerRoute = route
         ? fullRoute.concat(route).join('/')
         : fullRoute.length ? fullRoute.join('/') : route
-      router.on(innerRoute, cb)
+      router.on(innerRoute, thunkify(cb))
     }
 
     if (Array.isArray(children)) {
@@ -55,10 +57,24 @@ function sheetRouter (dft, tree) {
   })(tree, [])
 
   // match a route on the router
-  return function match (route) {
+  return function match (route, arg1, arg2, arg3, arg4, arg5) {
     assert.equal(typeof route, 'string', 'route must be a string')
-    const args = [].slice.call(arguments)
-    args[0] = pathname(args[0])
-    return router.apply(null, args)
+    if (route === lastRoute) {
+      return lastCallback(arg1, arg2, arg3, arg4, arg5)
+    } else {
+      lastRoute = pathname(route)
+      lastCallback = router(lastRoute)
+      return lastCallback(arg1, arg2, arg3, arg4, arg5)
+    }
+  }
+}
+
+// wrap a function in a function so it can be called at a later time
+// fn -> null -> fn
+function thunkify (cb) {
+  return function (params) {
+    return function (arg1, arg2, arg3, arg4, arg5) {
+      return cb(params, arg1, arg2, arg3, arg4, arg5)
+    }
   }
 }
