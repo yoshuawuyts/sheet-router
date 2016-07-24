@@ -84,7 +84,7 @@ Sometimes [query
 strings](https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils/search)
 must be decoded. In order to do this, the `./qs.js` file is included.
 ```js
-const qs = require('qs')
+const qs = require('./qs')
 qs('https://www.npmjs.com/search?q=query+string')
 // => { q: 'query+string' }
 ```
