@@ -1,5 +1,7 @@
-const reg = new RegExp('([^?=&]+)(=([^&]*))?', 'g')
+const window = require('global/window')
+
 const decodeURIComponent = window.decodeURIComponent
+const reg = new RegExp('([^?=&]+)(=([^&]*))?', 'g')
 
 module.exports = qs
 
