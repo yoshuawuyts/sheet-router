@@ -4,8 +4,8 @@
   "description": "Fast, modular client router",
   "main": "index.js",
   "scripts": {
-    "test": "standard && NODE_ENV=test node test",
-    "test:cov": "standard && NODE_ENV=test istanbul cover test.js"
+    "test": "standard && NODE_ENV=test tape test/*",
+    "test:cov": "standard && NODE_ENV=test istanbul cover test/*"
   },
   "repository": "yoshuawuyts/sheet-router",
   "keywords": [

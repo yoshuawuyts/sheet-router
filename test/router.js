@@ -1,8 +1,7 @@
 const noop = require('noop2')
 const test = require('tape')
 
-const sheetRouter = require('./')
-const walk = require('./walk')
+const sheetRouter = require('../')
 
 test('should assert input types', function (t) {
   t.plan(1)
@@ -163,9 +162,4 @@ test('should allow for default routes using three args', function (t) {
 
   router('/foo')
   router('/foo/bar')
-})
-
-test('walk is exposed', (t) => {
-  t.plan(1)
-  t.equal(typeof walk, 'function', 'walk exists')
 })
