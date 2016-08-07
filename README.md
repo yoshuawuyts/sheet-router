@@ -87,6 +87,30 @@ qs('https://www.npmjs.com/search?q=query+string')
 // => { q: 'query+string' }
 ```
 
+### walk
+Sometimes it's necessary to walk the `trie` to apply transformations.
+```js
+const sheetRouter = require('sheet-router')
+const walk = require('sheet-router/walk')
+
+const router = sheetRouter([
+  ['/multiply', (x, y) => x * y],
+  ['/divide', (x, y) => x / y]
+])
+
+walk(router, (route, cb) => {
+  const y = 2
+  return function (params, x) {
+    return cb(x, y)
+  }
+})
+
+router('/multiply', 4)
+// => 8
+router('/divide', 8)
+// => 4
+```
+
 ### virtual-dom example
 ```js
 const render = require('virtual-dom/create-element')

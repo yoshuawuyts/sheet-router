@@ -19,6 +19,8 @@ function sheetRouter (dft, tree) {
   var lastCallback = null
   var lastRoute = null
 
+  match._router = router
+
   // register tree in router
   // tree[0] is a string, thus a route
   // tree[0] is an array, thus not a route
@@ -56,8 +58,10 @@ function sheetRouter (dft, tree) {
     }
   })(tree, [])
 
+  return match
+
   // match a route on the router
-  return function match (route, arg1, arg2, arg3, arg4, arg5) {
+  function match (route, arg1, arg2, arg3, arg4, arg5) {
     assert.equal(typeof route, 'string', 'route must be a string')
     if (route === lastRoute) {
       return lastCallback(arg1, arg2, arg3, arg4, arg5)
