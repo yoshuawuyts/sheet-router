@@ -24,7 +24,8 @@
     "global": "^4.3.0",
     "pathname-match": "^1.1.2",
     "sliced": "^1.0.1",
-    "wayfarer": "^6.2.1"
+    "wayfarer": "^6.2.1",
+    "xtend": "^4.0.1"
   },
   "devDependencies": {
     "dependency-check": "^2.5.1",

@@ -8,7 +8,7 @@ module.exports = history
 // and update router accordingly
 // fn(str) -> null
 function history (cb) {
-  assert.equal(typeof cb, 'function', 'cb must be a function')
+  assert.equal(typeof cb, 'function', 'sheet-router/history: cb must be a function')
   window.onpopstate = function () {
     cb(document.location.href)
   }
