@@ -6,11 +6,13 @@ module.exports = sheetRouter
 
 // Fast, modular client router
 // fn(str, any[..]) -> fn(str, any[..])
-function sheetRouter (dft, tree) {
+function sheetRouter (dft, tree, opts) {
   if (!tree) {
     tree = dft
     dft = ''
   }
+
+  opts = opts || {}
 
   assert.equal(typeof dft, 'string', 'sheet-router: dft must be a string')
   assert.ok(Array.isArray(tree), 'sheet-router: tree must be an array')
@@ -50,7 +52,8 @@ function sheetRouter (dft, tree) {
       const innerRoute = route
         ? fullRoute.concat(route).join('/')
         : fullRoute.length ? fullRoute.join('/') : route
-      router.on(innerRoute, thunkify(cb))
+      const handler = (!opts.thunk) ? cb : thunkify(cb)
+      router.on(innerRoute, handler)
     }
 
     if (Array.isArray(children)) {
