@@ -162,9 +162,13 @@ render(router('/foo', react.createElement, { name: 'Jane' }), document.body)
 ```
 
 ## API
-### router = sheetRouter(dft?, [routes])
-Create a new router from a nested array. Takes an optional default path as the
-first argument.
+### router = sheetRouter(opts?, [routes])
+Create a new router from a nested array. Takes an optional options object as
+the first argument. Options are:
+- __opts.default__: default path to use if no paths match
+- __opts.thunk__: defaults to `true`. Toggle if callbacks should be thunked or
+  not. Useful to write a custom `walk` function that creates a different
+  signature
 
 ### router(route, [,...])
 Match a route on the router. Takes a path and an arbitrary list of arguments

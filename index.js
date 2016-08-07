@@ -6,16 +6,17 @@ module.exports = sheetRouter
 
 // Fast, modular client router
 // fn(str, any[..]) -> fn(str, any[..])
-function sheetRouter (dft, tree, opts) {
+function sheetRouter (opts, tree) {
   if (!tree) {
-    tree = dft
-    dft = ''
+    tree = opts
+    opts = {}
   }
 
-  opts = opts || {}
-
-  assert.equal(typeof dft, 'string', 'sheet-router: dft must be a string')
+  assert.equal(typeof opts, 'object', 'sheet-router: opts must be a object')
   assert.ok(Array.isArray(tree), 'sheet-router: tree must be an array')
+
+  const dft = opts.default || ''
+  assert.equal(typeof dft, 'string', 'sheet-router: dft must be a string')
 
   const router = wayfarer(dft)
   var lastCallback = null
