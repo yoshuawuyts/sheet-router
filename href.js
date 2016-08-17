@@ -13,6 +13,8 @@ function href (cb) {
   assert.equal(typeof cb, 'function', 'cb must be a function')
 
   window.onclick = function (e) {
+    if ((e.button && e.button !== 0) || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return
+
     const node = (function traverse (node) {
       if (!node) return
       if (node.localName !== 'a') return traverse(node.parentNode)
