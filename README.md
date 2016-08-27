@@ -109,6 +109,7 @@ router('/multiply', 4)
 // => 8
 router('/divide', 8)
 // => 4
+```
 
 You can ignore specific links that you do not want to process through routing by adding the `data-no-routing` attribute.
 
