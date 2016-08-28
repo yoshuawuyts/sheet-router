@@ -20,7 +20,7 @@ test('should route paths', function (t) {
 
 test('should match a default path', function (t) {
   t.plan(1)
-  const router = sheetRouter('/404', [
+  const router = sheetRouter({ default: '/404' }, [
     ['/404', () => t.pass('called')],
     ['/', noop]
   ])
@@ -30,7 +30,7 @@ test('should match a default path', function (t) {
 
 test('should return a value', function (t) {
   t.plan(1)
-  const router = sheetRouter('/404', [
+  const router = sheetRouter({ default: '/404' }, [
     ['/404', (params) => 'foo']
   ])
 

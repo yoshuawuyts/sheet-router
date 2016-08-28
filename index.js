@@ -15,12 +15,12 @@ function sheetRouter (opts, tree) {
   assert.equal(typeof opts, 'object', 'sheet-router: opts must be a object')
   assert.ok(Array.isArray(tree), 'sheet-router: tree must be an array')
 
-  const dft = opts.default || ''
+  const dft = opts.default || '/404'
   assert.equal(typeof dft, 'string', 'sheet-router: dft must be a string')
 
   const router = wayfarer(dft)
-  var lastCallback = null
-  var lastRoute = null
+  var prevCallback = null
+  var prevRoute = null
 
   match._router = router
 
@@ -53,7 +53,11 @@ function sheetRouter (opts, tree) {
       const innerRoute = route
         ? fullRoute.concat(route).join('/')
         : fullRoute.length ? fullRoute.join('/') : route
-      const handler = (!opts.thunk) ? cb : thunkify(cb)
+
+      // if opts.thunk is false or only enabled for match, don't thunk
+      const handler = (opts.thunk === false || opts.thunk === 'match')
+        ? cb
+        : thunkify(cb)
       router.on(innerRoute, handler)
     }
 
@@ -65,14 +69,24 @@ function sheetRouter (opts, tree) {
   return match
 
   // match a route on the router
+  //
+  // no thunking -> call route with all arguments
+  // thunking only for match -> call route with all arguments
+  // thunking and route is same -> call prev cb with new args
+  // thunking and route is diff -> create cb and call with new args
+  //
+  // (str, [any..]) -> any
   function match (route, arg1, arg2, arg3, arg4, arg5) {
     assert.equal(typeof route, 'string', 'sheet-router: route must be a string')
-    if (route === lastRoute) {
-      return lastCallback(arg1, arg2, arg3, arg4, arg5)
+
+    if (opts.thunk === false || opts.thunk !== 'match') {
+      return router(pathname(route), arg1, arg2, arg3, arg4, arg5)
+    } else if (route === prevRoute) {
+      return prevCallback(arg1, arg2, arg3, arg4, arg5)
     } else {
-      lastRoute = pathname(route)
-      lastCallback = router(lastRoute)
-      return lastCallback(arg1, arg2, arg3, arg4, arg5)
+      prevRoute = pathname(pathname(route))
+      prevCallback = router(prevRoute)
+      return prevCallback(arg1, arg2, arg3, arg4, arg5)
     }
   }
 }
