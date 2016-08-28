@@ -1,12 +1,10 @@
-const pathname = require('pathname-match')
-const wayfarer = require('wayfarer')
-const assert = require('assert')
-
-module.exports = sheetRouter
+import pathname from 'pathname-match'
+import wayfarer from 'wayfarer'
+import assert from 'assert'
 
 // Fast, modular client router
 // fn(str, any[..]) -> fn(str, any[..])
-function sheetRouter (opts, tree) {
+export function sheetRouter (opts, tree) {
   if (!tree) {
     tree = opts
     opts = {}

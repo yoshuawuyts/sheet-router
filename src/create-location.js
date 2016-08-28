@@ -1,8 +1,6 @@
-const document = require('global/document')
-const assert = require('assert')
-const xtend = require('xtend')
-
-module.exports = createLocation
+import document from 'global/document'
+import assert from 'assert'
+import xtend from 'xtend'
 
 // takes an initial representation of the location state
 // and then synchronize a mutation across all fields
@@ -13,7 +11,7 @@ module.exports = createLocation
 // - patch a state object with some value we pass in - lil patchy stuff
 //
 // (obj?, str?) -> obj
-function createLocation (state, patch) {
+export function createLocation (state, patch) {
   if (!state) {
     const newLocation = {
       pathname: document.location.pathname,
