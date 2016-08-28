@@ -151,6 +151,41 @@ router('/divide', 8)
 // => 4
 ```
 
+### create-location
+Sometimes you want to mirror the browser location API inside an object to use
+inside a framework. The hard part is to compute the new `href` from a set of
+changes. `create-location` provides an API to do just that:
+```js
+const createLocation = require('sheet-router/create-location')
+
+document.location = '/foo/bar#hey?beep=boop'
+var location = createLocation()
+// => {
+//    pathname: '/',
+//    hash: '#hey',
+//    search: { beep: 'boop' },
+//    href: '/foo/bar#hey?beep=boop'
+//  }
+
+const hashPatch = { hash: '#oh-no' }
+var location = createLocation(location, hashPatch)
+// => {
+//    pathname: '/',
+//    hash: '#oh-no',
+//    search: { beep: 'boop' },
+//    href: '/foo/bar#oh-no?beep=boop'
+//  }
+
+const uriPatch = '/hey/hello'
+var location = createLocation(location, uriPatch)
+// => {
+//    pathname: '/hey/hello',
+//    hash: '',
+//    search: { },
+//    href: '/hey/hello'
+//  }
+```
+
 ### virtual-dom example
 ```js
 const render = require('virtual-dom/create-element')

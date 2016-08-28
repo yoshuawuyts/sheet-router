@@ -29,6 +29,7 @@
   "devDependencies": {
     "dependency-check": "^2.5.1",
     "istanbul": "^0.4.1",
+    "jsdom": "^9.4.2",
     "noop2": "^2.0.0",
     "standard": "^5.4.1",
     "tape": "^4.4.0",
