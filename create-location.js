@@ -1,27 +1,39 @@
+const document = require('global/document')
+const assert = require('assert')
 const xtend = require('xtend')
 
 module.exports = createLocation
 
 // takes an initial representation of the location state
 // and then synchronize a mutation across all fields
-// (obj, str|obj?) -> obj
+//
+// scenarios:
+// - create a state object from document.location; we got no state yet
+// - create a new state object from a string we pass in; full override mode
+// - patch a state object with some value we pass in - lil patchy stuff
+//
+// (obj?, str?) -> obj
 function createLocation (state, patch) {
   if (!state) {
-    const newLoc = {
-      pathname: patch.pathname,
-      hash: patch.hash,
-      search: patch.search
+    const newLocation = {
+      pathname: document.location.pathname,
+      search: document.location.search,
+      hash: document.location.hash
     }
-    newLoc.href = createHref(newLoc)
-    return newLoc
-  } else if (typeof patch === 'string') {
-    const newLoc = parseUrl(patch)
-    newLoc.href = createHref(newLoc)
-    return newLoc
+    newLocation.href = createHref(newLocation)
+    return newLocation
   } else {
-    const newLoc = xtend(state, patch)
-    newLoc.href = createHref(newLoc)
-    return newLoc
+    assert.equal(typeof state, 'object', 'sheet-router/create-location: state should be an object')
+    if (typeof patch === 'string') {
+      const newLocation = parseUrl(patch)
+      newLocation.href = createHref(newLocation)
+      return newLocation
+    } else {
+      assert.equal(typeof patch, 'object', 'sheet-router/create-location: patch should be an object')
+      const newLocation = xtend(state, patch)
+      newLocation.href = createHref(newLocation)
+      return newLocation
+    }
   }
 
   // compute a href similar to node's href

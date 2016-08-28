@@ -79,7 +79,7 @@ function sheetRouter (opts, tree) {
   function match (route, arg1, arg2, arg3, arg4, arg5) {
     assert.equal(typeof route, 'string', 'sheet-router: route must be a string')
 
-    if (opts.thunk === false || opts.thunk !== 'match') {
+    if (opts.thunk === false) {
       return router(pathname(route), arg1, arg2, arg3, arg4, arg5)
     } else if (route === prevRoute) {
       return prevCallback(arg1, arg2, arg3, arg4, arg5)
