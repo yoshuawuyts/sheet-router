@@ -29,7 +29,7 @@ const sheetRouter = require('sheet-router')
 const html = require('bel')
 
 // default to `/404` if no path matches
-const router = sheetRouter('/404', [
+const router = sheetRouter({ default: '/404' }, [
   ['/', (params) => html`<div>Welcome to router land!</div>`],
   ['/:username', (params) => html`<div>${params.username}</div>`, [
     ['/orgs', (params) => html`<div>${params.username}'s orgs!</div>`]
@@ -54,7 +54,11 @@ history(function (href) {
 ```
 
 ### hash
-Interacting with hash changes is often a common fallback scenario for those who don't have support for browser history. Whenever a `hashchange` event is triggered, sheet-router will trigger an update as seen below. However in order to match hash prefixed routes, the `hash-match` module can be used to normalize routes (ex: `#/foo` becomes `/foo`).
+Interacting with hash changes is often a common fallback scenario for those who
+don't have support for browser history. Whenever a `hashchange` event is
+triggered, sheet-router will trigger an update as seen below. However in order
+to match hash prefixed routes, the `hash-match` module can be used to normalize
+routes (ex: `#/foo` becomes `/foo`).
 ```js
 const hash = require('sheet-router/hash')
 const match = require('hash-match')
@@ -77,10 +81,17 @@ href(function (href) {
 })
 ```
 
+You can ignore specific links that you do not want to process through routing
+by adding the `data-no-routing` attribute.
+
+```html
+<a href="/my-external-link" data-no-routing>Non routed link</a>
+<a href="/another-external-link" data-no-routing="true">Not routed either</a>
+```
+
 ### qs
-Sometimes [query
-strings](https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils/search)
-must be decoded. In order to do this, the `./qs.js` file is included.
+Sometimes [query strings][mdn-qs] must be decoded. In order to do this, the
+`./qs.js` file is included.
 ```js
 const qs = require('./qs')
 qs('https://www.npmjs.com/search?q=query+string')
@@ -88,12 +99,14 @@ qs('https://www.npmjs.com/search?q=query+string')
 ```
 
 ### walk
-Sometimes it's necessary to walk the `trie` to apply transformations.
+Sometimes it's necessary to walk the `trie` to apply transformations. In order
+to access the raw callback and prevent unnecessary function calls we need to
+disable the default thunking mechanism by passing `{ thunk: false }`:
 ```js
 const sheetRouter = require('sheet-router')
 const walk = require('sheet-router/walk')
 
-const router = sheetRouter([
+const router = sheetRouter({ thunk: false }, [
   ['/multiply', (x, y) => x * y],
   ['/divide', (x, y) => x / y]
 ])
@@ -111,11 +124,31 @@ router('/divide', 8)
 // => 4
 ```
 
-You can ignore specific links that you do not want to process through routing by adding the `data-no-routing` attribute.
+We could change our transformed function to be thunked by changing `walk` to
+return a function, and setting `{ thunk: 'match' }` so only the `match`
+function thunks. This is pretty advanced stuff, so don't sweat it too much -
+but it's super useful to create performant frameworks!
+```js
+const router = sheetRouter({ thunk: 'match' }, [
+  ['/foo', (x, y) => x * y],
+  ['/bar', (x, y) => x / y]
+])
 
-```html
-  <a href="/my-external-link" data-no-routing>Non routed link</a>
-  <a href="/another-external-link" data-no-routing="true">Not routed either</a>
+walk(router, (route, cb) => {
+  const y = 2
+  return function (params) {
+    return function (x) {
+      return cb(x, y)
+    }
+  }
+})
+
+router('/multiply', 4)
+// => 8
+router('/multiply', 4)
+// => 8 (but this time around this is computed faster)
+router('/divide', 8)
+// => 4
 ```
 
 ### virtual-dom example
@@ -162,11 +195,16 @@ render(router('/foo', react.createElement, { name: 'Jane' }), document.body)
 ```
 
 ## API
-### router = sheetRouter(dft?, [routes])
-Create a new router from a nested array. Takes an optional default path as the
-first argument.
+### router = sheetRouter(opts?, [routes])
+Create a new router from a nested array. Takes an optional options object as
+the first argument. Options are:
+- __opts.default__: defaults to `'/404'`, default path to use if no paths match
+- __opts.thunk__: defaults to `true`. Toggle if callbacks should be thunked or
+  not. Can be set to `'match'` to only have the returned `router.match()`
+  function expect thunks to exist. Useful to write a custom `walk` function
+  that creates a different signature
 
-### router(route, [,...])
+### router(opts, [,...])
 Match a route on the router. Takes a path and an arbitrary list of arguments
 that are then passed to the matched routes. Cleans urls to only match the
 [pathname][15].
@@ -185,6 +223,7 @@ Call a callback to handle `<a href="#">` clicks.
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
 
+[mdn-qs]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils/search
 [0]: https://img.shields.io/badge/stability-experimental-orange.svg?style=flat-square
 [1]: https://nodejs.org/api/documentation.html#documentation_stability_index
 [2]: https://img.shields.io/npm/v/sheet-router.svg?style=flat-square
