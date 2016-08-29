@@ -5,6 +5,7 @@
   "main": "dist/bundle.js",
   "jsnext:main": "src/index.js",
   "scripts": {
+    "prepublish": "npm run build",
     "test": "npm run build && standard && NODE_ENV=test tape test/*",
     "test:cov": "standard && NODE_ENV=test istanbul cover test/*",
     "build": "rollup --config"
