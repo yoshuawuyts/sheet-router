@@ -1,4 +1,4 @@
-const qs = require('../qs')
+const qs = require('../dist/bundle').qs
 const tape = require('tape')
 
 tape('qs', (t) => {
