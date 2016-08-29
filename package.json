@@ -5,9 +5,9 @@
   "main": "dist/bundle.js",
   "jsnext:main": "src/index.js",
   "scripts": {
-    "test": "standard && NODE_ENV=test tape test/*",
+    "test": "npm run build && standard && NODE_ENV=test tape test/*",
     "test:cov": "standard && NODE_ENV=test istanbul cover test/*",
-    "build": "rollup -c"
+    "build": "rollup --config"
   },
   "repository": "yoshuawuyts/sheet-router",
   "keywords": [
@@ -36,11 +36,13 @@
     "noop2": "^2.0.0",
     "rollup": "^0.34.10",
     "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-browserify-transform": "^0.1.0",
     "rollup-plugin-commonjs": "^3.3.1",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-strip": "^1.1.1",
     "standard": "^5.4.1",
     "tape": "^4.4.0",
+    "unassertify": "^2.0.3",
     "virtual-dom": "^2.1.1"
   }
 }
