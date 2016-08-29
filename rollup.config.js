@@ -13,7 +13,7 @@ export default {
     nodeResolve({jsnext: true, main: true}),
     commonjs(),
     babel({
-      include: ['node_modules/wayfarer/**', 'node_modules/xtend', 'src/**']
+      include: ['node_modules/wayfarer/**', 'src/**']
     })
   ],
   moduleName: 'sheetRouter',
