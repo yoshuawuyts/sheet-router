@@ -1,7 +1,7 @@
 const noop = require('noop2')
 const test = require('tape')
 
-const sheetRouter = require('../')
+const sheetRouter = require('../dist/bundle').sheetRouter
 
 test('router', (t) => {
   t.test('should assert input types', function (t) {

@@ -1,7 +1,5 @@
-const window = require('global/window')
-const assert = require('assert')
-
-module.exports = href
+import window from 'global/window'
+import assert from 'assert'
 
 const noRoutingAttrName = 'data-no-routing'
 
@@ -9,7 +7,7 @@ const noRoutingAttrName = 'data-no-routing'
 // and url lives on the same domain. Replaces
 // trailing '#' so empty links work as expected.
 // fn(str) -> null
-function href (cb) {
+export function href (cb) {
   assert.equal(typeof cb, 'function', 'sheet-router/href: cb must be a function')
 
   window.onclick = function (e) {

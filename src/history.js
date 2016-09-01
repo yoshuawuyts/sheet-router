@@ -1,13 +1,11 @@
-const document = require('global/document')
-const window = require('global/window')
-const assert = require('assert')
-
-module.exports = history
+import document from 'global/document'
+import window from 'global/window'
+import assert from 'assert'
 
 // listen to html5 pushstate events
 // and update router accordingly
 // fn(str) -> null
-function history (cb) {
+export function history (cb) {
   assert.equal(typeof cb, 'function', 'sheet-router/history: cb must be a function')
   window.onpopstate = function () {
     cb(document.location.href)

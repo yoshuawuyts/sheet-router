@@ -1,7 +1,7 @@
-const walk = require('wayfarer/walk')
-const assert = require('assert')
+import walk from 'wayfarer/walk'
+import assert from 'assert'
 
-module.exports = walkSheetRouter
+export {walkSheetRouter as walk}
 
 function walkSheetRouter (router, cb) {
   assert.equal(typeof router, 'function', 'sheet-router/walk: router should be a function')

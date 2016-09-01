@@ -1,15 +1,9 @@
-const sheetRouter = require('../')
-const walk = require('../walk')
-const noop = require('noop2')
+const SheetRouter = require('../dist/bundle')
+const sheetRouter = SheetRouter.sheetRouter
+const walk = SheetRouter.walk
 const tape = require('tape')
 
 tape('walk', function (t) {
-  t.test('should assert input types', (t) => {
-    t.plan(2)
-    t.throws(walk.bind(null), /function/, 'assert first arg is function')
-    t.throws(walk.bind(null, noop), /function/, 'assert second arg is a function')
-  })
-
   t.test('should walk a trie', (t) => {
     t.plan(2)
     const router = sheetRouter({ thunk: false }, [
