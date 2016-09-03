@@ -8,41 +8,33 @@ window.location = {}
 
 const nonCatchEvents = {
   'non-links': {
-    target: { localName: 'p' },
-    preventDefault: sinon.spy()
+    target: { localName: 'p' }
   },
   'link without href': {
-    target: { localName: 'a', hasAttribute: () => {} },
-    preventDefault: sinon.spy()
+    target: { localName: 'a', hasAttribute: () => {} }
   },
   'link with data-no-routing': {
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: (a) => a === 'data-no-routing' },
-    preventDefault: sinon.spy()
+    target: { localName: 'a', href: 'someUrl#', hasAttribute: (a) => a === 'data-no-routing' }
   },
   'event with ctrlKey': {
     ctrlKey: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} },
-    preventDefault: sinon.spy()
+    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
   },
   'event with metaKey': {
     metaKey: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} },
-    preventDefault: sinon.spy()
+    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
   },
   'event with altKey': {
     altKey: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} },
-    preventDefault: sinon.spy()
+    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
   },
   'event with shiftKey': {
     shiftKey: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} },
-    preventDefault: sinon.spy()
+    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
   },
   'button click': {
     button: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} },
-    preventDefault: sinon.spy()
+    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
   }
 }
 
@@ -77,6 +69,7 @@ tape('href', (t) => {
     t.test('should avoid ' + nonCatchEvent, (t) => {
       t.plan(3)
       const event = nonCatchEvents[nonCatchEvent]
+      event.preventDefault = sinon.spy()
       const previousPushCount = window.history.pushState.callCount
       const cb = sinon.spy()
       href(cb)
