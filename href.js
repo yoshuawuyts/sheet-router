@@ -8,7 +8,7 @@ const noRoutingAttrName = 'data-no-routing'
 // handle a click if is anchor tag with an href
 // and url lives on the same domain. Replaces
 // trailing '#' so empty links work as expected.
-// fn(str) -> null
+// fn(str, obj?) -> null
 function href (cb, root) {
   assert.equal(typeof cb, 'function', 'sheet-router/href: cb must be a function')
 
