@@ -31,6 +31,7 @@
     "istanbul": "^0.4.1",
     "jsdom": "^9.4.2",
     "noop2": "^2.0.0",
+    "sinon": "^1.17.5",
     "standard": "^5.4.1",
     "tape": "^4.4.0",
     "virtual-dom": "^2.1.1"
