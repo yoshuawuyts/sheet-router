@@ -19,24 +19,19 @@ const nonCatchEvents = {
     target: { localName: 'a', href: 'someUrl#', hasAttribute: (a) => a === 'data-no-routing' }
   },
   'event with ctrlKey': {
-    ctrlKey: true,
-    target: goodLink
+    ctrlKey: true
   },
   'event with metaKey': {
-    metaKey: true,
-    target: goodLink
+    metaKey: true
   },
   'event with altKey': {
-    altKey: true,
-    target: goodLink
+    altKey: true
   },
   'event with shiftKey': {
-    shiftKey: true,
-    target: goodLink
+    shiftKey: true
   },
   'button click': {
-    button: true,
-    target: goodLink
+    button: true
   }
 }
 
@@ -68,8 +63,10 @@ tape('href', (t) => {
   for (var nonCatchEvent in nonCatchEvents) {
     t.test('should avoid ' + nonCatchEvent, (t) => {
       t.plan(3)
-      const event = nonCatchEvents[nonCatchEvent]
-      event.preventDefault = sinon.spy()
+      const event = Object.assign({
+        target: goodLink,
+        preventDefault: sinon.spy()
+      }, nonCatchEvents[nonCatchEvent])
       const previousPushCount = window.history.pushState.callCount
       const cb = sinon.spy()
       href(cb)
