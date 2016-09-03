@@ -6,6 +6,8 @@ const sinon = require('sinon')
 window.history = { pushState: sinon.spy() }
 window.location = {}
 
+const goodLink = { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
+
 const nonCatchEvents = {
   'non-links': {
     target: { localName: 'p' }
@@ -18,23 +20,23 @@ const nonCatchEvents = {
   },
   'event with ctrlKey': {
     ctrlKey: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
+    target: goodLink
   },
   'event with metaKey': {
     metaKey: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
+    target: goodLink
   },
   'event with altKey': {
     altKey: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
+    target: goodLink
   },
   'event with shiftKey': {
     shiftKey: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
+    target: goodLink
   },
   'button click': {
     button: true,
-    target: { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
+    target: goodLink
   }
 }
 
@@ -46,9 +48,7 @@ tape('href', (t) => {
         localName: 'somethingOtherThanALink',
         parentNode: {
           localName: 'stillNotALink',
-          parentNode: {
-            localName: 'a', href: 'someUrl#', hasAttribute: () => {}
-          }
+          parentNode: goodLink
         }
       },
       preventDefault: sinon.spy()
@@ -88,9 +88,7 @@ tape('href', (t) => {
         localName: 'somethingOtherThanALink',
         parentNode: {
           localName: 'root',
-          parentNode: {
-            localName: 'a', href: 'someUrl#', hasAttribute: () => {}
-          }
+          parentNode: goodLink
         }
       },
       preventDefault: sinon.spy()
