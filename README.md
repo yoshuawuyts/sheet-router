@@ -89,6 +89,15 @@ by adding the `data-no-routing` attribute.
 <a href="/another-external-link" data-no-routing="true">Not routed either</a>
 ```
 
+Also, if you pass an optional `root` node reference as a second argument to `href`, it will never intercept clicks outside that node. This is useful when your app is confined to a widget in a larger document.
+
+```js
+href(function (href) {
+  router(href)
+  console.log('link was clicked: ' + href)
+}, document.getElementById("app-root"))
+```
+
 ### qs
 Sometimes [query strings][mdn-qs] must be decoded. In order to do this, the
 `./qs.js` file is included.
