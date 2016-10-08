@@ -39,12 +39,14 @@ test('router', (t) => {
   })
 
   t.test('should clean urls before matching', function (t) {
-    t.plan(1)
+    t.plan(2)
     const router = sheetRouter([
-      ['/foo', (params) => t.pass('called')]
+      ['/foo', (params) => t.pass('cleaned qs')],
+      ['#hello-world', (params) => t.pass('matched hash')]
     ])
 
-    router('https://foobar.com/foo#hello-world?bar=baz')
+    router('https://foobar.com/foo?bar=baz')
+    router('https://foobar.com#hello-world?bar=baz')
   })
 
   t.test('should deliver arbitrary objects', function (t) {
@@ -163,5 +165,30 @@ test('router', (t) => {
 
     router('/foo')
     router('/foo/bar')
+  })
+})
+
+test('hash routes', (t) => {
+  t.test('should allow for hash routes', (t) => {
+    t.plan(2)
+    const router = sheetRouter([
+      ['/foo', () => t.pass('foo called'), [
+        ['#bar', () => t.pass('bar called')]
+      ]]
+    ])
+
+    router('/foo')
+    router('/foo#bar')
+  })
+
+  t.test('should allow for hash partials', (t) => {
+    t.plan(1)
+    const router = sheetRouter([
+      ['/foo', () => t.pass('foo called'), [
+        ['#:bar', (params) => t.equal(params.bar, 'bar', 'params match')]
+      ]]
+    ])
+
+    router('/foo#bar')
   })
 })

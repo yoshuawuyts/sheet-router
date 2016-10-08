@@ -22,7 +22,6 @@
   "license": "MIT",
   "dependencies": {
     "global": "^4.3.0",
-    "pathname-match": "^1.1.2",
     "wayfarer": "^6.2.1",
     "xtend": "^4.0.1"
   },
