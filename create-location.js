@@ -18,31 +18,20 @@ function createLocation (state, patch) {
     const newLocation = {
       pathname: document.location.pathname,
       search: document.location.search,
-      hash: document.location.hash
+      hash: document.location.hash,
+      href: document.location.href
     }
-    newLocation.href = createHref(newLocation)
     return newLocation
   } else {
     assert.equal(typeof state, 'object', 'sheet-router/create-location: state should be an object')
     if (typeof patch === 'string') {
       const newLocation = parseUrl(patch)
-      newLocation.href = createHref(newLocation)
       return newLocation
     } else {
       assert.equal(typeof patch, 'object', 'sheet-router/create-location: patch should be an object')
       const newLocation = xtend(state, patch)
-      newLocation.href = createHref(newLocation)
       return newLocation
     }
-  }
-
-  // compute a href similar to node's href
-  // (obj) -> str
-  function createHref (location) {
-    var ret = location.pathname
-    if (location.hash) ret += (location.hash)
-    if (location.search) ret += (location.search)
-    return ret
   }
 
   // parse a URL into a kv object inside the browser
@@ -52,7 +41,8 @@ function createLocation (state, patch) {
     a.href = url
 
     return {
-      href: a.pathname,
+      href: a.href,
+      pathname: a.pathname,
       search: a.search,
       hash: a.hash
     }
