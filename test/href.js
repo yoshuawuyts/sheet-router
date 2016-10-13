@@ -6,7 +6,7 @@ const sinon = require('sinon')
 window.history = { pushState: sinon.spy() }
 window.location = {}
 
-const goodLink = { localName: 'a', href: 'someUrl#', hasAttribute: () => {} }
+const goodLink = { localName: 'a', href: 'someUrl#', pathname: 'someUrl', hasAttribute: () => {} }
 
 const nonCatchEvents = {
   'non-links': {
@@ -37,7 +37,7 @@ const nonCatchEvents = {
 
 tape('href', (t) => {
   t.test('should capture link click', (t) => {
-    t.plan(5)
+    t.plan(3)
     const event = {
       target: {
         localName: 'somethingOtherThanALink',
@@ -48,16 +48,13 @@ tape('href', (t) => {
       },
       preventDefault: sinon.spy()
     }
-    const previousPushCount = window.history.pushState.callCount
     const cb = sinon.spy()
     href(cb)
     window.onclick(event)
 
     t.equal(event.preventDefault.callCount, 1)
     t.equal(cb.callCount, 1)
-    t.equal(cb.lastCall.args[0], 'someUrl')
-    t.equal(window.history.pushState.callCount, previousPushCount + 1)
-    t.deepEqual(window.history.pushState.lastCall.args, [{}, null, 'someUrl'])
+    t.deepEqual(cb.lastCall.args[0], { hash: undefined, href: 'someUrl#', pathname: 'someUrl', search: undefined })
   })
 
   for (var nonCatchEvent in nonCatchEvents) {
