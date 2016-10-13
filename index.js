@@ -1,6 +1,15 @@
-const pathname = require('pathname-match')
 const wayfarer = require('wayfarer')
 const assert = require('assert')
+
+/* eslint-disable no-useless-escape */
+const protocol = '^(http(s)?(:\/\/))?(www\.)?'
+const domain = '[a-zA-Z0-9-_\.]+'
+const qs = '[\?].*$'
+/* eslint-enable no-useless-escape */
+
+const prefix = new RegExp(protocol + domain)
+const normalize = new RegExp('#')
+const suffix = new RegExp(qs)
 
 module.exports = sheetRouter
 
@@ -33,7 +42,7 @@ function sheetRouter (opts, tree) {
   // tree[1] is an array
   ;(function walk (tree, fullRoute) {
     if (typeof tree[0] === 'string') {
-      var route = tree[0].replace(/^\//, '')
+      var route = tree[0].replace(/^[#\/]/, '')
     } else {
       var rootArr = tree[0]
     }
@@ -84,7 +93,7 @@ function sheetRouter (opts, tree) {
     } else if (route === prevRoute) {
       return prevCallback(arg1, arg2, arg3, arg4, arg5)
     } else {
-      prevRoute = pathname(pathname(route))
+      prevRoute = pathname(route)
       prevCallback = router(prevRoute)
       return prevCallback(arg1, arg2, arg3, arg4, arg5)
     }
@@ -92,11 +101,21 @@ function sheetRouter (opts, tree) {
 }
 
 // wrap a function in a function so it can be called at a later time
-// fn -> null -> fn
+// fn -> obj -> (any, any, any, any, any)
 function thunkify (cb) {
   return function (params) {
     return function (arg1, arg2, arg3, arg4, arg5) {
       return cb(params, arg1, arg2, arg3, arg4, arg5)
     }
   }
+}
+
+// replace everything in a route but the pathname and hash
+// TODO(yw): ditch 'suffix' and allow qs routing
+// str -> str
+function pathname (route) {
+  return route
+    .replace(prefix, '')
+    .replace(suffix, '')
+    .replace(normalize, '/')
 }

@@ -1,6 +1,6 @@
 {
   "name": "sheet-router",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Fast, modular client router",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,6 @@
   "license": "MIT",
   "dependencies": {
     "global": "^4.3.0",
-    "pathname-match": "^1.1.2",
     "wayfarer": "^6.2.1",
     "xtend": "^4.0.1"
   },

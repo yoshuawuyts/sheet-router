@@ -29,8 +29,11 @@ function href (cb, root) {
     if (isRoutingDisabled) return
 
     e.preventDefault()
-    const href = node.href.replace(/#$/, '')
-    cb(href)
-    window.history.pushState({}, null, href)
+    cb({
+      pathname: node.pathname,
+      search: node.search,
+      href: node.href,
+      hash: node.hash
+    })
   }
 }

@@ -10,6 +10,11 @@ module.exports = history
 function history (cb) {
   assert.equal(typeof cb, 'function', 'sheet-router/history: cb must be a function')
   window.onpopstate = function () {
-    cb(document.location.href)
+    cb({
+      pathname: document.location.pathname,
+      search: document.location.search,
+      href: document.location.href,
+      hash: document.location.hash
+    })
   }
 }
