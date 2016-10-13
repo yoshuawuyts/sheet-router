@@ -3,7 +3,7 @@ const assert = require('assert')
 
 /* eslint-disable no-useless-escape */
 const protocol = '^(http(s)?(:\/\/))?(www\.)?'
-const domain = '[a-zA-Z0-9-_\.]+'
+const domain = '[a-zA-Z0-9-_\.]+(:[0-9]{1,5})?(\/{1})?'
 const qs = '[\?].*$'
 /* eslint-enable no-useless-escape */
 
