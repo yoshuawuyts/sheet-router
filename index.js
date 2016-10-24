@@ -1,15 +1,9 @@
+const window = require('global/window')
+const pathname = require('./_pathname')
 const wayfarer = require('wayfarer')
 const assert = require('assert')
 
-/* eslint-disable no-useless-escape */
-const protocol = '^(http(s)?(:\/\/))?(www\.)?'
-const domain = '[a-zA-Z0-9-_\.]+(:[0-9]{1,5})?(\/{1})?'
-const qs = '[\?].*$'
-/* eslint-enable no-useless-escape */
-
-const prefix = new RegExp(protocol + domain)
-const normalize = new RegExp('#')
-const suffix = new RegExp(qs)
+const isElectron = (window.process && window.process.type)
 
 module.exports = sheetRouter
 
@@ -89,11 +83,11 @@ function sheetRouter (opts, tree) {
     assert.equal(typeof route, 'string', 'sheet-router: route must be a string')
 
     if (opts.thunk === false) {
-      return router(pathname(route), arg1, arg2, arg3, arg4, arg5)
+      return router(pathname(route, isElectron), arg1, arg2, arg3, arg4, arg5)
     } else if (route === prevRoute) {
       return prevCallback(arg1, arg2, arg3, arg4, arg5)
     } else {
-      prevRoute = pathname(route)
+      prevRoute = pathname(route, isElectron)
       prevCallback = router(prevRoute)
       return prevCallback(arg1, arg2, arg3, arg4, arg5)
     }
@@ -108,14 +102,4 @@ function thunkify (cb) {
       return cb(params, arg1, arg2, arg3, arg4, arg5)
     }
   }
-}
-
-// replace everything in a route but the pathname and hash
-// TODO(yw): ditch 'suffix' and allow qs routing
-// str -> str
-function pathname (route) {
-  return route
-    .replace(prefix, '')
-    .replace(suffix, '')
-    .replace(normalize, '/')
 }
