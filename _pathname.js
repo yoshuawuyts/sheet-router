@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-const electron = '^\/.*\/index.html?(\/{1})?'
+const electron = '^[file\:|\/].*\/index.html?(\/{1})?'
 const protocol = '^(http(s)?(:\/\/))?(www\.)?'
 const domain = '[a-zA-Z0-9-_\.]+(:[0-9]{1,5})?(\/{1})?'
 const qs = '[\?].*$'
