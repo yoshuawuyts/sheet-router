@@ -2,6 +2,8 @@ const document = require('global/document')
 const assert = require('assert')
 const xtend = require('xtend')
 
+const qs = require('./qs')
+
 module.exports = createLocation
 
 // takes an initial representation of the location state
@@ -17,7 +19,7 @@ function createLocation (state, patch) {
   if (!state) {
     const newLocation = {
       pathname: document.location.pathname,
-      search: document.location.search,
+      search: (document.location.search) ? qs(document.location.search) : {},
       hash: document.location.hash,
       href: document.location.href
     }
@@ -43,7 +45,7 @@ function createLocation (state, patch) {
     return {
       href: a.href,
       pathname: a.pathname,
-      search: a.search,
+      search: (a.search) ? qs(a.search) : {},
       hash: a.hash
     }
   }
