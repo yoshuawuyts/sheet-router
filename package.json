@@ -1,13 +1,13 @@
 {
-  "name": "sheet-router",
-  "version": "4.1.2",
+  "name": "@arve.knudsen/sheet-router",
+  "version": "4.2.0",
   "description": "Fast, modular client router",
   "main": "index.js",
   "scripts": {
     "test": "standard && NODE_ENV=test tape test/*",
     "test:cov": "standard && NODE_ENV=test istanbul cover test/*"
   },
-  "repository": "yoshuawuyts/sheet-router",
+  "repository": "aknuds1/sheet-router",
   "keywords": [
     "client",
     "router",
