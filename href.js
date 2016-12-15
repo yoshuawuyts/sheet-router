@@ -1,6 +1,8 @@
 const window = require('global/window')
 const assert = require('assert')
 
+const qs = require('./qs')
+
 module.exports = href
 
 const noRoutingAttrName = 'data-no-routing'
@@ -31,7 +33,7 @@ function href (cb, root) {
     e.preventDefault()
     cb({
       pathname: node.pathname,
-      search: node.search,
+      search: (node.search) ? qs(node.search) : {},
       href: node.href,
       hash: node.hash
     })
