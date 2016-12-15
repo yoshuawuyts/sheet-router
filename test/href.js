@@ -54,7 +54,9 @@ tape('href', (t) => {
 
     t.equal(event.preventDefault.callCount, 1)
     t.equal(cb.callCount, 1)
-    t.deepEqual(cb.lastCall.args[0], { hash: undefined, href: 'someUrl#', pathname: 'someUrl', search: undefined })
+    t.deepEqual(cb.lastCall.args[0], {
+      hash: undefined, href: 'someUrl#', pathname: 'someUrl', search: {}
+    })
   })
 
   for (var nonCatchEvent in nonCatchEvents) {

@@ -36,7 +36,7 @@ function sheetRouter (opts, tree) {
   // tree[1] is an array
   ;(function walk (tree, fullRoute) {
     if (typeof tree[0] === 'string') {
-      var route = tree[0].replace(/^[#\/]/, '')
+      var route = tree[0].replace(/^[#/]/, '')
     } else {
       var rootArr = tree[0]
     }
