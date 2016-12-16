@@ -16,7 +16,7 @@ module.exports = pathname
 // TODO(yw): ditch 'suffix' and allow qs routing
 // (str, bool) -> str
 function pathname (route, isElectron) {
-  if (isElectron) route = route.replace(stripElectron, '')
+  if (isElectron) route = route.replace(stripElectron, '').replace('file://', '')
   else route = route.replace(prefix, '')
   return route.replace(suffix, '').replace(normalize, '/')
 }
