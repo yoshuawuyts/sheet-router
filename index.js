@@ -3,7 +3,7 @@ const pathname = require('./_pathname')
 const wayfarer = require('wayfarer')
 const assert = require('assert')
 
-const isElectron = (window.process && window.process.type)
+const isElectron = (/file:\/\//.test(window.location.origin))
 
 module.exports = sheetRouter
 
