@@ -248,7 +248,7 @@ the first argument. Options are:
   function expect thunks to exist. Useful to write a custom `walk` function
   that creates a different signature
 
-### router(opts, [,...])
+### router(path, [,...])
 Match a route on the router. Takes a path and an arbitrary list of arguments
 that are then passed to the matched routes. Cleans urls to only match the
 [pathname][15].
