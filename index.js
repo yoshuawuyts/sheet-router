@@ -1,9 +1,8 @@
-const window = require('global/window')
 const pathname = require('./_pathname')
 const wayfarer = require('wayfarer')
 const assert = require('assert')
 
-const isElectron = (/file:\/\//.test(window.location.origin))
+const isElectron = require('is-electron')()
 
 module.exports = sheetRouter
 
