@@ -1,13 +1,13 @@
-const window = require('global/window')
+var window = require('global/window')
 
-const decodeURIComponent = window.decodeURIComponent
-const reg = new RegExp('([^?=&]+)(=([^&]*))?', 'g')
+var decodeURIComponent = window.decodeURIComponent
+var reg = new RegExp('([^?=&]+)(=([^&]*))?', 'g')
 
 module.exports = qs
 
 // decode a uri into a kv representation :: str -> obj
 function qs (uri) {
-  const obj = {}
+  var obj = {}
   uri.replace(/^.*\?/, '').replace(reg, map)
   return obj
 

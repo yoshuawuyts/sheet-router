@@ -1,5 +1,5 @@
-const window = require('global/window')
-const assert = require('assert')
+var window = require('global/window')
+var assert = require('assert')
 
 module.exports = hash
 
