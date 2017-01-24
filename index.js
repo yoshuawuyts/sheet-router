@@ -1,8 +1,8 @@
-const pathname = require('./_pathname')
-const wayfarer = require('wayfarer')
-const assert = require('assert')
+var pathname = require('./_pathname')
+var wayfarer = require('wayfarer')
+var assert = require('assert')
 
-const isElectron = require('is-electron')()
+var isElectron = require('is-electron')()
 
 module.exports = sheetRouter
 
@@ -17,10 +17,10 @@ function sheetRouter (opts, tree) {
   assert.equal(typeof opts, 'object', 'sheet-router: opts must be a object')
   assert.ok(Array.isArray(tree), 'sheet-router: tree must be an array')
 
-  const dft = opts.default || '/404'
+  var dft = opts.default || '/404'
   assert.equal(typeof dft, 'string', 'sheet-router: dft must be a string')
 
-  const router = wayfarer(dft)
+  var router = wayfarer(dft)
   var prevCallback = null
   var prevRoute = null
 
@@ -40,8 +40,8 @@ function sheetRouter (opts, tree) {
       var rootArr = tree[0]
     }
 
-    const cb = (typeof tree[1] === 'function') ? tree[1] : null
-    const children = (Array.isArray(tree[1]))
+    var cb = (typeof tree[1] === 'function') ? tree[1] : null
+    var children = (Array.isArray(tree[1]))
       ? tree[1]
       : Array.isArray(tree[2]) ? tree[2] : null
 
@@ -52,12 +52,12 @@ function sheetRouter (opts, tree) {
     }
 
     if (cb) {
-      const innerRoute = route
+      var innerRoute = route
         ? fullRoute.concat(route).join('/')
         : fullRoute.length ? fullRoute.join('/') : route
 
       // if opts.thunk is false or only enabled for match, don't thunk
-      const handler = (opts.thunk === false || opts.thunk === 'match')
+      var handler = (opts.thunk === false || opts.thunk === 'match')
         ? cb
         : thunkify(cb)
       router.on(innerRoute, handler)

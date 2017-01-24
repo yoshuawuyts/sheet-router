@@ -1,11 +1,11 @@
-const window = require('global/window')
-const assert = require('assert')
+var window = require('global/window')
+var assert = require('assert')
 
-const qs = require('./qs')
+var qs = require('./qs')
 
 module.exports = href
 
-const noRoutingAttrName = 'data-no-routing'
+var noRoutingAttrName = 'data-no-routing'
 
 // handle a click if is anchor tag with an href
 // and url lives on the same domain. Replaces
@@ -17,7 +17,7 @@ function href (cb, root) {
   window.onclick = function (e) {
     if ((e.button && e.button !== 0) || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return
 
-    const node = (function traverse (node) {
+    var node = (function traverse (node) {
       if (!node || node === root) return
       if (node.localName !== 'a') return traverse(node.parentNode)
       if (node.href === undefined) return traverse(node.parentNode)
@@ -27,7 +27,7 @@ function href (cb, root) {
 
     if (!node) return
 
-    const isRoutingDisabled = node.hasAttribute(noRoutingAttrName)
+    var isRoutingDisabled = node.hasAttribute(noRoutingAttrName)
     if (isRoutingDisabled) return
 
     e.preventDefault()

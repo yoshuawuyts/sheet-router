@@ -1,6 +1,6 @@
-const document = require('global/document')
-const window = require('global/window')
-const assert = require('assert')
+var document = require('global/document')
+var window = require('global/window')
+var assert = require('assert')
 
 module.exports = history
 

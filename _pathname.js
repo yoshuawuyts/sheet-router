@@ -1,14 +1,14 @@
 /* eslint-disable no-useless-escape */
-const electron = '^(file:\/\/|\/)(.*\.html?\/?)?'
-const protocol = '^(http(s)?(:\/\/))?(www\.)?'
-const domain = '[a-zA-Z0-9-_\.]+(:[0-9]{1,5})?(\/{1})?'
-const qs = '[\?].*$'
+var electron = '^(file:\/\/|\/)(.*\.html?\/?)?'
+var protocol = '^(http(s)?(:\/\/))?(www\.)?'
+var domain = '[a-zA-Z0-9-_\.]+(:[0-9]{1,5})?(\/{1})?'
+var qs = '[\?].*$'
 /* eslint-enable no-useless-escape */
 
-const stripElectron = new RegExp(electron)
-const prefix = new RegExp(protocol + domain)
-const normalize = new RegExp('#')
-const suffix = new RegExp(qs)
+var stripElectron = new RegExp(electron)
+var prefix = new RegExp(protocol + domain)
+var normalize = new RegExp('#')
+var suffix = new RegExp(qs)
 
 module.exports = pathname
 
