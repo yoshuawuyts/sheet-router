@@ -2,7 +2,8 @@ var pathname = require('./_pathname')
 var wayfarer = require('wayfarer')
 var assert = require('assert')
 
-var isElectron = require('is-electron')()
+var isLocalFile = (/file:\/\//.test(typeof window === 'object' &&
+  window.location && window.location.origin)) // electron support
 
 module.exports = sheetRouter
 
@@ -82,11 +83,11 @@ function sheetRouter (opts, tree) {
     assert.equal(typeof route, 'string', 'sheet-router: route must be a string')
 
     if (opts.thunk === false) {
-      return router(pathname(route, isElectron), arg1, arg2, arg3, arg4, arg5)
+      return router(pathname(route, isLocalFile), arg1, arg2, arg3, arg4, arg5)
     } else if (route === prevRoute) {
       return prevCallback(arg1, arg2, arg3, arg4, arg5)
     } else {
-      prevRoute = pathname(route, isElectron)
+      prevRoute = pathname(route, isLocalFile)
       prevCallback = router(prevRoute)
       return prevCallback(arg1, arg2, arg3, arg4, arg5)
     }

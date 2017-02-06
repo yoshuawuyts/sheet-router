@@ -22,7 +22,6 @@
   "license": "MIT",
   "dependencies": {
     "global": "^4.3.0",
-    "is-electron": "^2.0.0",
     "wayfarer": "^6.2.1",
     "xtend": "^4.0.1"
   },
