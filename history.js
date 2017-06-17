@@ -2,6 +2,8 @@ var document = require('global/document')
 var window = require('global/window')
 var assert = require('assert')
 
+var qs = require('./qs')
+
 module.exports = history
 
 // listen to html5 pushstate events
@@ -12,7 +14,7 @@ function history (cb) {
   window.onpopstate = function () {
     cb({
       pathname: document.location.pathname,
-      search: document.location.search,
+      search: qs(document.location.search),
       href: document.location.href,
       hash: document.location.hash
     })
