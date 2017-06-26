@@ -4,9 +4,19 @@ const window = require('global/window') // will be empty object shared with href
 const sinon = require('sinon')
 
 window.history = { pushState: sinon.spy() }
-window.location = {}
+window.location = {
+  'href': 'https://example.com/',
+  'origin': 'https://example.com',
+  'protocol': 'https:',
+  'host': 'example.com',
+  'hostname': 'example.com',
+  'port': '',
+  'pathname': '/',
+  'search': '',
+  'hash': ''
+}
 
-const goodLink = { localName: 'a', href: 'someUrl#', pathname: 'someUrl', hasAttribute: () => {} }
+const goodLink = { localName: 'a', href: 'https://example.com/someUrl#', pathname: 'someUrl', hasAttribute: () => {} }
 
 const nonCatchEvents = {
   'non-links': {
@@ -55,7 +65,7 @@ tape('href', (t) => {
     t.equal(event.preventDefault.callCount, 1)
     t.equal(cb.callCount, 1)
     t.deepEqual(cb.lastCall.args[0], {
-      hash: undefined, href: 'someUrl#', pathname: 'someUrl', search: {}
+      hash: undefined, href: 'https://example.com/someUrl#', pathname: 'someUrl', search: {}
     })
   })
 
@@ -87,6 +97,24 @@ tape('href', (t) => {
           parentNode: goodLink
         }
       },
+      preventDefault: sinon.spy()
+    }
+    const previousPushCount = window.history.pushState.callCount
+    const cb = sinon.spy()
+    const root = event.target.parentNode
+    href(cb, root)
+    window.onclick(event)
+
+    t.equal(event.preventDefault.callCount, 0)
+    t.equal(cb.callCount, 0)
+    t.equal(window.history.pushState.callCount, previousPushCount)
+  })
+
+  t.test('should avoid other host', (t) => {
+    t.plan(3)
+    const event = {
+      // href is a different origin because it is another protocol
+      target: { localName: 'a', href: 'http://example.com', hasAttribute: () => {} },
       preventDefault: sinon.spy()
     }
     const previousPushCount = window.history.pushState.callCount
